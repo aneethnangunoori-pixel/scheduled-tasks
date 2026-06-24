@@ -50,7 +50,7 @@ while True:
         connection.sendmail(
             from_addr=MY_EMAIL,
             to_addrs=MY_EMAIL,
-            msg="Subject:Look Up👆\n\nThe ISS is above you in the sky."
+            msg="Subject:Look Up!\n\nThe ISS is above you in the sky."
         )
     time.sleep(60)
 
