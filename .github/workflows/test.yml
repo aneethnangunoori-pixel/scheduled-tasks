@@ -49,10 +49,10 @@ jobs:
         run: |
           echo "Checking for required files..."
 
-          if [ -f "main.py" ]; then
-            echo "main.py found"
+          if [ -f "birthday_wisher.py" ]; then
+            echo "birthday_wisher.py found"
           else
-            echo "main.py not found!"
+            echo "birthday_wisher.py not found!"
             exit 1
           fi
 
@@ -74,7 +74,7 @@ jobs:
           echo "All required files found!"
 
       - name: Test Python syntax
-        run: python -m py_compile main.py && echo "Python syntax OK"
+        run: python -m py_compile birthday_wisher.py && echo "Python syntax OK"
 
       - name: Success
         run: |
