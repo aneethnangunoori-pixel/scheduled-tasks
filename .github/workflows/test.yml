@@ -56,10 +56,10 @@ jobs:
             exit 1
           fi
 
-          if [ -f "requirements.txt" ]; then
-            echo "requirements.txt found"
+          if [ -f "requirements_for_birthday_wisher.txt" ]; then
+            echo "requirements_for_birthday_wisher.txt found"
           else
-            echo "requirements.txt not found!"
+            echo "requirements_for_birthday_wisher.txt not found!"
             exit 1
           fi
 
