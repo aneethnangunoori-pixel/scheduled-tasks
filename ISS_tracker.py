@@ -1,31 +1,25 @@
-import os
+import requests
 from datetime import datetime
 import smtplib
 import time
-import requests
 
-MY_EMAIL = os.environ.get("MY_EMAIL")
-MY_PASSWORD = os.environ.get("MY_ISS_APP_PASSWORD")
-MY_LAT = 51.507351
-MY_LONG = -0.127758
+MY_EMAIL = "aneethnangunoori@gmail.com"
+MY_PASSWORD = "___YOUR_PASSWORD_HERE___"
+MY_LAT = 34.180733 # Your latitude
+MY_LONG = -118.344076 # Your longitude
 
 
 def is_iss_overhead():
-    try:
-        # Switched to a highly reliable alternative ISS API
-        response = requests.get(url="https://wheretheiss.at", timeout=5)
-        response.raise_for_status()
-        data = response.json()
+    response = requests.get(url="http://api.open-notify.org/iss-now.json")
+    response.raise_for_status()
+    data = response.json()
 
-        # Updated key names to match the new API structure
-        iss_latitude = float(data["latitude"])
-        iss_longitude = float(data["longitude"])
+    iss_latitude = float(data["iss_position"]["latitude"])
+    iss_longitude = float(data["iss_position"]["longitude"])
 
-        if MY_LAT - 5 <= iss_latitude <= MY_LAT + 5 and MY_LONG - 5 <= iss_longitude <= MY_LONG + 5:
-            return True
-    except requests.exceptions.RequestException:
-        pass
-    return False
+    #Your position is within +5 or -5 degrees of the iss position.
+    if MY_LAT-5 <= iss_latitude <= MY_LAT+5 and MY_LONG-5 <= iss_longitude <= MY_LONG+5:
+        return True
 
 
 def is_night():
@@ -34,39 +28,29 @@ def is_night():
         "lng": MY_LONG,
         "formatted": 0,
     }
-    try:
-        response = requests.get("https://api.sunrise-sunset.org/json", params=parameters, timeout=5)
-        response.raise_for_status()
-        data = response.json()
+    response = requests.get("https://api.sunrise-sunset.org/json", params=parameters)
+    response.raise_for_status()
+    data = response.json()
+    sunrise = int(data["results"]["sunrise"].split("T")[1].split(":")[0])
+    sunset = int(data["results"]["sunset"].split("T")[1].split(":")[0])
 
-        sunrise = int(data["results"]["sunrise"].split("T")[1].split(":")[0])
-        sunset = int(data["results"]["sunset"].split("T")[1].split(":")[0])
+    time_now = datetime.now().hour
 
-        # CRITICAL FIX: Changed to .utcnow() to match the API's UTC timezone
-        time_now = datetime.utcnow().hour
-
-        if time_now >= sunset or time_now <= sunrise:
-            return True
-    except requests.exceptions.RequestException:
-        print("Could not connect to Sunset API. Retrying next minute...")
-    return False
+    if time_now >= sunset or time_now <= sunrise:
+        return True
 
 
-# CRITICAL FIX: Moved the sleep to the end of the loop so it checks immediately on startup
 while True:
-    if is_iss_overhead() and is_night():
-        try:
-            # CRITICAL FIX: Added explicit port 587 for Gmail
-            with smtplib.SMTP("smtp.gmail.com", 587) as connection:
-                connection.starttls()
-                connection.login(user=MY_EMAIL, password=MY_PASSWORD)
-                connection.sendmail(
-                    from_addr=MY_EMAIL,
-                    to_addrs=MY_EMAIL,
-                    msg="Subject:Look Up\n\nThe ISS is above you in the sky."
-                )
-            print("Email sent successfully!")
-        except Exception as e:
-            print(f"Failed to send email: {e}")
-
     time.sleep(60)
+    if True:
+        connection = smtplib.SMTP("__YOUR_SMTP_ADDRESS_HERE___")
+        connection.starttls()
+        connection.login(MY_EMAIL, MY_PASSWORD)
+        connection.sendmail(
+            from_addr=MY_EMAIL,
+            to_addrs=MY_EMAIL,
+            msg="Subject:Look Up👆\n\nThe ISS is above you in the sky."
+        )
+
+
+
