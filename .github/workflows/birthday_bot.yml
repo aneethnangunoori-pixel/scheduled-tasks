@@ -43,5 +43,5 @@ jobs:
           # Add more secrets in Settings > Secrets > Actions
           MY_EMAIL: ${{ secrets.MY_EMAIL }}
           MY_BIRTHDAY_APP_PASSWORD: ${{ secrets.MY_BIRTHDAY_APP_PASSWORD }}
-          TZ: 'America/Los Angeles'
+          TZ: 'America/Los_Angeles'
         run: python birthday_wisher.py
