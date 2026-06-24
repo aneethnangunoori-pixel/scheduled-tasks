@@ -23,7 +23,7 @@ def is_iss_overhead():
         if MY_LAT - 5 <= iss_latitude <= MY_LAT + 5 and MY_LONG - 5 <= iss_longitude <= MY_LONG + 5:
             return True
     except requests.exceptions.RequestException:
-        print("Could not connect to ISS API. Retrying next minute...")
+        pass
     return False
 
 
