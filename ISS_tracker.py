@@ -33,25 +33,28 @@ def is_night():
     response = requests.get("https://api.sunrise-sunset.org/json", params=parameters)
     response.raise_for_status()
     data = response.json()
-    sunrise = int(data["results"]["sunrise"].split("T")[1].split(":")[0])
-    sunset = int(data["results"]["sunset"].split("T")[1].split(":")[0])
+    sunrise_time_str = data["results"]["sunrise"].split("T")[1]
+    sunset_time_str = data["results"]["sunset"].split("T")[1]
+    
+    sunrise = int(sunrise_time_str[:2])
+    sunset = int(sunset_time_str[:2])
 
     time_now = datetime.utcnow().hour
 
     if time_now >= sunset or time_now <= sunrise:
         return True
+    return False
 
 
-while True:
-    if is_iss_overhead() and is_night():
-        connection = smtplib.SMTP("smtp.gmail.com")
-        connection.starttls()
-        connection.login(MY_EMAIL, MY_PASSWORD)
-        connection.sendmail(
-            from_addr=MY_EMAIL,
-            to_addrs=MY_EMAIL,
-            msg="Subject:Look Up!\n\nThe ISS is above you in the sky."
+
+if is_iss_overhead() and is_night():
+    connection = smtplib.SMTP("smtp.gmail.com", 587)
+    connection.starttls()
+    connection.login(MY_EMAIL, MY_PASSWORD)
+    connection.sendmail(
+        from_addr=MY_EMAIL,
+        to_addrs=MY_EMAIL,
+        msg="Subject:Look Up!\n\nThe ISS is above you in the sky."
         )
-    time.sleep(60)
 
 
