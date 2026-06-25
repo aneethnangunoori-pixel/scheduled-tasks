@@ -8,8 +8,8 @@ account_sid = os.environ.get("OWM_account_sid")
 auth_token = os.environ.get("OWM_auth_token")
 
 weather_parameters = {
-    "lat": 39.0997,
-    "lon": -94.5786,
+    "lat": 34.180733,
+    "lon": -118.344076,
     "appid": api_key,
     "cnt": 4,
 }
@@ -26,7 +26,7 @@ for hour_data in weather_data["list"]:
         will_rain = True
         break
 
-if will_rain:
+if True:
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         from_="whatsapp:+14155238886",
