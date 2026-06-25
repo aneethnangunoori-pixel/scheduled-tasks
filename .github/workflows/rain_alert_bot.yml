@@ -42,6 +42,7 @@ jobs:
           # Your secrets are available as environment variables
           # Add more secrets in Settings > Secrets > Actions
           OWM_account_sid: ${{ secrets.OWM_account_sid }}
+          OWM_api_key: ${{ secrets.OWM_api_key }}
           OWM_auth_token: ${{ secrets.OWM_auth_token }}
           TZ: 'America/Los_Angeles'
         run: python rain_alert.py
