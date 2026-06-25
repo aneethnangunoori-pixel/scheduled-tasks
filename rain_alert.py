@@ -8,8 +8,8 @@ account_sid = os.environ.get("OWM_account_sid")
 auth_token = os.environ.get("OWM_auth_token")
 
 weather_parameters = {
-    "lat": 34.180733,
-    "lon": -118.344076,
+    "lat": 39.0997,
+    "lon": -94.5786,
     "appid": api_key,
     "cnt": 4,
 }
