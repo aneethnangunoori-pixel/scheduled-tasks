@@ -7,6 +7,7 @@
 
 
 from datetime import datetime
+import zoneinfo
 import pandas
 import random
 import smtplib
@@ -16,7 +17,8 @@ import os
 MY_EMAIL = os.environ.get("MY_EMAIL")
 MY_PASSWORD = os.environ.get("MY_BIRTHDAY_APP_PASSWORD")
 
-today = datetime.utcnow()
+local_tz = zoneinfo.ZoneInfo("America/Los_Angeles")
+today = datetime.now(local_tz)
 today_tuple = (today.month, today.day)
 
 data = pandas.read_csv("birthdays.csv")
