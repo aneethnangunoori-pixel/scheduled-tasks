@@ -16,7 +16,7 @@ import os
 MY_EMAIL = os.environ.get("MY_EMAIL")
 MY_PASSWORD = os.environ.get("MY_BIRTHDAY_APP_PASSWORD")
 
-today = datetime.now()
+today = datetime.utcnow()
 today_tuple = (today.month, today.day)
 
 data = pandas.read_csv("birthdays.csv")
